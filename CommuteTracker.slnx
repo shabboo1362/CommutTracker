@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CommuteTracker.Api/CommuteTracker.Api.csproj" />
+    <Project Path="src/CommuteTracker.Core/CommuteTracker.Core.csproj" />
+  </Folder>
+  <Folder Name="/src/CommuteTracker.Infrastructure/">
+    <Project Path="src/CommuteTracker.Infrastructure/CommuteTracker.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CommuteTracker.Tests/CommuteTracker.Tests.csproj" />
+  </Folder>
+</Solution>
