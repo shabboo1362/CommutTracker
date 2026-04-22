@@ -94,6 +94,7 @@ D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTr
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.AssemblyInfoInputs.cache
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.AssemblyInfo.cs
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.csproj.CoreCompileInputs.cache
+D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.sourcelink.json
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteT.CF7EC43F.Up2Date
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.dll
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\refint\CommuteTracker.Tests.dll

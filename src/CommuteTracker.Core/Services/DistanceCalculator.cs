@@ -47,7 +47,7 @@ namespace CommuteTracker.Core.Services
                 var point2 = orderedPoints[i + 1];
                 totalDistance += CalculateDistance(point1.Latitude, point1.Longitude, point2.Latitude, point2.Longitude);
             }
-            return totalDistance;
+            return Math.Round(totalDistance, 2); // round to 2 decimal places for better readability
         }
     }
 }
