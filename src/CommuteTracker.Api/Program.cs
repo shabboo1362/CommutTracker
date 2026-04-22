@@ -8,7 +8,21 @@ builder.Services.AddDbContext<CommuteTrackerDbContext>(options =>
     options.UseSqlite("Data Source=commutetracker.db"));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Version = "v1",
+        Title = "CommuteTracker API",
+        Description = "API for tracking commute data, including users, trips, and location points.",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Shabboo",
+            Email = "shabboo@example.com"
+        }
+    });
+});
 
 var app = builder.Build();
 
