@@ -1,4 +1,10 @@
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_CommuteTracker.Tests
+D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.csproj.AssemblyReference.cache
+D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.AssemblyInfoInputs.cache
+D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.AssemblyInfo.cs
+D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.csproj.CoreCompileInputs.cache
+D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.sourcelink.json
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\testhost.dll
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\testhost.exe
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
@@ -89,12 +95,6 @@ D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\zh-Hant\M
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\CommuteTracker.Core.dll
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\bin\Debug\net8.0\CommuteTracker.Core.pdb
-D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.csproj.AssemblyReference.cache
-D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.GeneratedMSBuildEditorConfig.editorconfig
-D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.AssemblyInfoInputs.cache
-D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.AssemblyInfo.cs
-D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.csproj.CoreCompileInputs.cache
-D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.sourcelink.json
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteT.CF7EC43F.Up2Date
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\CommuteTracker.Tests.dll
 D:\projects\CommuteTracker\tests\CommuteTracker.Tests\obj\Debug\net8.0\refint\CommuteTracker.Tests.dll

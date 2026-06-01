@@ -1,6 +1,6 @@
 //test distance calculator
 using CommuteTracker.Core.Entities;
-using CommuteTracker.Core.Services;
+using CommuteTracker.Core.Helpers;
 namespace CommuteTracker.Tests
 {
     public class DistanceCalculatorTests

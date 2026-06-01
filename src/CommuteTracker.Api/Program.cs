@@ -1,4 +1,5 @@
 using CommuteTracker.Infrastructure;
+using CommuteTracker.Core.Services;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CommuteTrackerDbContext>(options =>
     options.UseSqlite("Data Source=commutetracker.db"));
 builder.Services.AddControllers();
+builder.Services.AddScoped<TripService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

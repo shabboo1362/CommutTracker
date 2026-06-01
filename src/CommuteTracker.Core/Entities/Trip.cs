@@ -1,3 +1,4 @@
+using CommuteTracker.Core.Enums;
 namespace CommuteTracker.Core.Entities
 {
     public class Trip
@@ -9,5 +10,6 @@ namespace CommuteTracker.Core.Entities
         public TransportType TransportType { get; set; }
         public User? User { get; set; }
         public List<LocationPoint> LocationPoints { get; set; } = new ();
+        public TripStatus Status { get; set; } = TripStatus.Active;
     }
 }

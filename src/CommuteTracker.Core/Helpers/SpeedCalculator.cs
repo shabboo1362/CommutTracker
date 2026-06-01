@@ -1,4 +1,4 @@
-namespace CommuteTracker.Core.Services;
+namespace CommuteTracker.Core.Helpers;
 
 public static class SpeedCalculator
 {

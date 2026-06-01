@@ -2,7 +2,10 @@ using CommuteTracker.Api.DTOs;
 using CommuteTracker.Core.Entities;
 using CommuteTracker.Core.Services;
 using CommuteTracker.Infrastructure;
+using CommuteTracker.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using CommuteTracker.Core.Services;
 
 namespace CommuteTracker.Api.Controllers;
 
@@ -11,10 +14,11 @@ namespace CommuteTracker.Api.Controllers;
 public class TripController : ControllerBase
 {
     private readonly CommuteTrackerDbContext _db;
-
-    public TripController(CommuteTrackerDbContext db)
+    private readonly TripService _tripService;
+    public TripController(CommuteTrackerDbContext db, TripService tripService)
     {
         _db = db;
+        _tripService = tripService;
     }
 
     [HttpPost]
@@ -30,7 +34,8 @@ public class TripController : ControllerBase
             UserId = request.UserId,
             StartTime = request.Points.First().Timestamp,
             EndTime = request.Points.Last().Timestamp,
-            TransportType = request.TransportType
+            TransportType = request.TransportType,
+            Status = TripStatus.Active
         };
 
         var points = request.Points.Select(p => new LocationPoint
@@ -45,7 +50,7 @@ public class TripController : ControllerBase
         trip.LocationPoints = points;
 
         
-        var totalDistance = DistanceCalculator.CalculateTotalDistance(points);
+        var totalDistance = _tripService.CalculateDistance(points);
         
         _db.Trips.Add(trip);
         await _db.SaveChangesAsync();
@@ -60,34 +65,62 @@ public class TripController : ControllerBase
 public async Task<IActionResult> GetUserTrips(Guid userId)
 {
     var trips = _db.Trips
-        .Where(t => t.UserId == userId)
-        .Select(t => new
-        {
-            t.Id,
-            t.StartTime,
-            t.EndTime,
-            t.TransportType,
-            Distance = t.LocationPoints.Count > 1
-                ? DistanceCalculator.CalculateTotalDistance(t.LocationPoints)
-                : 0,
-                AverageSpeedKmH = t.EndTime.HasValue
-        ? Math.Round(
-            SpeedCalculator.CalculateAverageSpeed(
-                DistanceCalculator.CalculateTotalDistance(
-                t.LocationPoints),
-                t.StartTime,
-                t.EndTime.Value),
-            2)
-        : 0,
-            Points = t.LocationPoints.Select(p => new
-            {
-                p.Latitude,
-                p.Longitude,
-                p.Timestamp
-            })
-        })
-        .ToList();
+    .Include(t => t.LocationPoints)
+    .Where(t => t.UserId == userId)
+    .ToList();
+    var result = trips.Select(t =>
+{
+    var distance = _tripService.CalculateDistance(t.LocationPoints);
 
-    return Ok(trips);
+    var speed = t.EndTime.HasValue
+        ? _tripService.CalculateSpeed(
+            distance,
+            t.StartTime,
+            t.EndTime.Value)
+        : 0;
+
+    return new
+    {
+        t.Id,
+        t.StartTime,
+        t.EndTime,
+        t.TransportType,
+        Status = t.Status,
+        IsActive = t.Status == TripStatus.Active,
+        Distance = Math.Round(distance, 2),
+        AverageSpeedKmH = Math.Round(speed, 2),
+        Points = t.LocationPoints.Select(p => new
+        {
+            p.Latitude,
+            p.Longitude,
+            p.Timestamp
+        })
+    };
+});
+    return Ok(result);
+}
+[HttpPost("{tripId}/end")]
+public async Task<IActionResult> EndTrip(Guid tripId)
+{
+    var trip = await _db.Trips
+        .Include(t => t.LocationPoints)
+        .FirstOrDefaultAsync(t => t.Id == tripId);
+
+    if (trip == null)
+        return NotFound();
+
+    trip.EndTime = DateTime.UtcNow;
+    trip.Status = TripStatus.Completed;
+
+    var distance = _tripService.CalculateDistance(trip.LocationPoints);
+
+    await _db.SaveChangesAsync();
+
+    return Ok(new
+    {
+        trip.Id,
+        Status = trip.Status,
+        Distance = Math.Round(distance, 2)
+    });
 }
 }

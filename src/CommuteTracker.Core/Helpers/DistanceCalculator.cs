@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CommuteTracker.Core.Services
+namespace CommuteTracker.Core.Helpers
 {
     public static class DistanceCalculator
     {
