@@ -46,7 +46,7 @@ public class TripController : ControllerBase
 
         
         var totalDistance = DistanceCalculator.CalculateTotalDistance(points);
-
+        
         _db.Trips.Add(trip);
         await _db.SaveChangesAsync();
 
@@ -56,4 +56,38 @@ public class TripController : ControllerBase
             Distance = totalDistance
         });
     }
+    [HttpGet("user/{userId}")]
+public async Task<IActionResult> GetUserTrips(Guid userId)
+{
+    var trips = _db.Trips
+        .Where(t => t.UserId == userId)
+        .Select(t => new
+        {
+            t.Id,
+            t.StartTime,
+            t.EndTime,
+            t.TransportType,
+            Distance = t.LocationPoints.Count > 1
+                ? DistanceCalculator.CalculateTotalDistance(t.LocationPoints)
+                : 0,
+                AverageSpeedKmH = t.EndTime.HasValue
+        ? Math.Round(
+            SpeedCalculator.CalculateAverageSpeed(
+                DistanceCalculator.CalculateTotalDistance(
+                t.LocationPoints),
+                t.StartTime,
+                t.EndTime.Value),
+            2)
+        : 0,
+            Points = t.LocationPoints.Select(p => new
+            {
+                p.Latitude,
+                p.Longitude,
+                p.Timestamp
+            })
+        })
+        .ToList();
+
+    return Ok(trips);
+}
 }
