@@ -68,6 +68,10 @@ public async Task<IActionResult> GetUserTrips(Guid userId)
     .Include(t => t.LocationPoints)
     .Where(t => t.UserId == userId)
     .ToList();
+    foreach (var trip in trips)
+    {
+        _tripService.AutoCompleteTrip(trip);
+    }
     var result = trips.Select(t =>
 {
     var distance = _tripService.CalculateDistance(t.LocationPoints);
