@@ -6,6 +6,7 @@ using CommuteTracker.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CommuteTracker.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CommuteTracker.Api.Controllers;
 
@@ -20,8 +21,9 @@ public class TripController : ControllerBase
         _db = db;
         _tripService = tripService;
     }
-
+    [Authorize]
     [HttpPost]
+   
     public async Task<IActionResult> CreateTrip(CreateTripRequest request)
     {
         var user = await _db.Users.FindAsync(request.UserId);
@@ -61,6 +63,7 @@ public class TripController : ControllerBase
             Distance = totalDistance
         });
     }
+    [Authorize]
     [HttpGet("user/{userId}")]
 public async Task<IActionResult> GetUserTrips(Guid userId)
 {
@@ -103,6 +106,7 @@ public async Task<IActionResult> GetUserTrips(Guid userId)
 });
     return Ok(result);
 }
+[Authorize]
 [HttpPost("{tripId}/end")]
 public async Task<IActionResult> EndTrip(Guid tripId)
 {
