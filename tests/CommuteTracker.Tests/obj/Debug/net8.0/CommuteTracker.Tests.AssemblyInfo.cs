@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CommuteTracker.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb45ba2b20f40afb48204d30945c31efd8ba1ce9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+275543472ca55d568fa8308637ba1e57f4d1c27e")]
 [assembly: System.Reflection.AssemblyProductAttribute("CommuteTracker.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CommuteTracker.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
