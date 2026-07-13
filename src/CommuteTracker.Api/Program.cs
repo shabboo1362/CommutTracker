@@ -1,4 +1,6 @@
 using CommuteTracker.Infrastructure;
+using CommuteTracker.Infrastructure.Services;
+using CommuteTracker.Core.Services.Interfaces;
 using CommuteTracker.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +38,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes(jwtSettings["Key"]!))
         };
     });
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSwaggerGen(options =>
 {
     

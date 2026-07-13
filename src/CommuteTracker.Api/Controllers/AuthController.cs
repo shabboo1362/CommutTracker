@@ -6,6 +6,7 @@ using System.Text;
 using CommuteTracker.Api.DTOs;
 using CommuteTracker.Core.Entities;
 using CommuteTracker.Core.Helpers;
+using CommuteTracker.Core.Services.Interfaces;
 using CommuteTracker.Infrastructure;
 
 
@@ -18,37 +19,23 @@ public class AuthController : ControllerBase
 {
     private readonly CommuteTrackerDbContext _db;
     private readonly IConfiguration _config;
-    public AuthController(CommuteTrackerDbContext db, IConfiguration config)
+    private readonly IAuthService _authService;
+
+    public AuthController(CommuteTrackerDbContext db, IConfiguration config, IAuthService authService)
    {
     _config = config;
     _db = db;
+    _authService = authService;
    }
    [HttpPost("register")]
 public async Task<IActionResult> Register(RegisterRequest request)
 {
-    var existingUser = _db.Users
-        .FirstOrDefault(u => u.Email == request.Email);
-
-    if (existingUser != null)
-    {
-        return BadRequest("Email already exists.");
-    }
-
-    var user = new User
-    {
-        Id = Guid.NewGuid(),
-        Name = request.Name,
-        Email = request.Email,
-        PasswordHash = PasswordHasher.Hash(request.Password)
-    };
-
-    _db.Users.Add(user);
-
-    await _db.SaveChangesAsync();
+    var userId = await _authService.RegisterUserAsync(request.Name, request.Email, request.Password);
 
     return Ok(new
     {
-        Message = "User registered successfully"
+        Message = "User registered successfully",
+        UserId = userId
     });
 }
     [HttpPost("login")]
