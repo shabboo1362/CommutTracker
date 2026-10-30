@@ -18,7 +18,7 @@ var audience = jwtSettings["Audience"];
 builder.Services.AddDbContext<CommuteTrackerDbContext>(options =>
     options.UseSqlite("Data Source=commutetracker.db"));
 builder.Services.AddControllers();
-builder.Services.AddScoped<TripService>();
+builder.Services.AddScoped<ITripService, CommuteTracker.Infrastructure.Services.TripService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

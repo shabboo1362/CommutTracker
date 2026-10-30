@@ -1,12 +1,8 @@
 using CommuteTracker.Api.DTOs;
-using CommuteTracker.Core.Entities;
-using CommuteTracker.Core.Services;
-using CommuteTracker.Infrastructure;
-using CommuteTracker.Core.Enums;
+using CommuteTracker.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using CommuteTracker.Core.Services;
 using Microsoft.AspNetCore.Authorization;
+using CommuteTracker.Core.Entities;
 
 namespace CommuteTracker.Api.Controllers;
 
@@ -14,11 +10,9 @@ namespace CommuteTracker.Api.Controllers;
 [Route("api/[controller]")]
 public class TripController : ControllerBase
 {
-    private readonly CommuteTrackerDbContext _db;
-    private readonly TripService _tripService;
-    public TripController(CommuteTrackerDbContext db, TripService tripService)
+    private readonly ITripService _tripService;
+    public TripController( ITripService tripService)
     {
-        _db = db;
         _tripService = tripService;
     }
     [Authorize]
@@ -26,109 +20,50 @@ public class TripController : ControllerBase
    
     public async Task<IActionResult> CreateTrip(CreateTripRequest request)
     {
-        var user = await _db.Users.FindAsync(request.UserId);
-        if (user == null)
-            return NotFound("User not found");
-
-        var trip = new Trip
-        {
-            Id = Guid.NewGuid(),
-            UserId = request.UserId,
-            StartTime = request.Points.First().Timestamp,
-            EndTime = request.Points.Last().Timestamp,
-            TransportType = request.TransportType,
-            Status = TripStatus.Active
-        };
-
+        try
+    {
         var points = request.Points.Select(p => new LocationPoint
         {
-            Id = Guid.NewGuid(),
-            TripId = trip.Id,
             Latitude = p.Latitude,
             Longitude = p.Longitude,
             Timestamp = p.Timestamp
         }).ToList();
 
-        trip.LocationPoints = points;
+        var result = await _tripService.CreateTripAsync(
+            request.UserId,
+            request.TransportType,
+            points);
 
-        
-        var totalDistance = _tripService.CalculateDistance(points);
-        
-        _db.Trips.Add(trip);
-        await _db.SaveChangesAsync();
-
-        return Ok(new
-        {
-            trip.Id,
-            Distance = totalDistance
-        });
+        return Ok(result);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(ex.Message);
+    }
+    catch (ArgumentException ex)
+    {
+        return BadRequest(ex.Message);
+    }
     }
     [Authorize]
     [HttpGet("user/{userId}")]
 public async Task<IActionResult> GetUserTrips(Guid userId)
 {
-    var trips = _db.Trips
-    .Include(t => t.LocationPoints)
-    .Where(t => t.UserId == userId)
-    .ToList();
-    foreach (var trip in trips)
-    {
-        _tripService.AutoCompleteTrip(trip);
-    }
-    var result = trips.Select(t =>
-{
-    var distance = _tripService.CalculateDistance(t.LocationPoints);
+    var result = await _tripService.GetUserTripsAsync(userId);
 
-    var speed = t.EndTime.HasValue
-        ? _tripService.CalculateSpeed(
-            distance,
-            t.StartTime,
-            t.EndTime.Value)
-        : 0;
-
-    return new
-    {
-        t.Id,
-        t.StartTime,
-        t.EndTime,
-        t.TransportType,
-        Status = t.Status,
-        IsActive = t.Status == TripStatus.Active,
-        Distance = Math.Round(distance, 2),
-        AverageSpeedKmH = Math.Round(speed, 2),
-        Points = t.LocationPoints.Select(p => new
-        {
-            p.Latitude,
-            p.Longitude,
-            p.Timestamp
-        })
-    };
-});
     return Ok(result);
 }
 [Authorize]
 [HttpPost("{tripId}/end")]
 public async Task<IActionResult> EndTrip(Guid tripId)
 {
-    var trip = await _db.Trips
-        .Include(t => t.LocationPoints)
-        .FirstOrDefaultAsync(t => t.Id == tripId);
+    var result = await _tripService.EndTripAsync(tripId);
 
-    if (trip == null)
-        return NotFound();
-
-    trip.EndTime = DateTime.UtcNow;
-    trip.Status = TripStatus.Completed;
-
-    var distance = _tripService.CalculateDistance(trip.LocationPoints);
-
-    await _db.SaveChangesAsync();
-
-    return Ok(new
+    if (result == null)
     {
-        trip.Id,
-        Status = trip.Status,
-        Distance = Math.Round(distance, 2)
-    });
+        return NotFound("Trip not found.");
+    }
+
+    return Ok(result);
 }
 }
